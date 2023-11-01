@@ -1,0 +1,22 @@
+name: Daily Script
+
+on:
+  schedule:
+    - cron: '0 59 10 ? * *'  
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11.4
+
+      - name: Run the script
+        run: |
+          python script.py

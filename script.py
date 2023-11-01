@@ -43,7 +43,6 @@ def get_data():
             text = h3.get_text(strip=True)
             if ":Rs" in text:
                 category_name = text.split(':')[0]
-                print(text)
                 price_string = text.split(':')[1].strip()
                 # Extract and average the two values in the price_string
                 price_values = [int(val.strip())
@@ -51,21 +50,21 @@ def get_data():
                 average_price = sum(price_values) / len(price_values)
                 category_data[category_name] = average_price
 
+        final_message = f"Date: {formatted_date}\n"
         # Create separate files for each category and write the data
         for category, price in category_data.items():
-            print(category)
             filename = f"{category.lower().replace(' ','_')}prices.csv"
             append_mode = os.path.exists(filename)
             with open(filename, "a" if append_mode else "w", newline='') as file:
                 writer = csv.writer(file)
                 # Write the data
-                writer.writerow([formatted_date, category, average_price])
+                writer.writerow([formatted_date, category, price])
 
             # Send a telegram message with the price update
-            message = f"Date: {formatted_date}\nCategory: {category}\nAverage Price: {average_price}"
-            send_telegram_message(message)
+            final_message =final_message + f"{category} - {average_price} \n"
             plot_and_send_graph_wrapper(filename, category)
 
+        send_telegram_message(final_message)
         print("Data written to files for each category and date.")
     else:
         print(f"Failed to fetch data from {url}")
@@ -79,7 +78,7 @@ def send_telegram_message(text_message):
         'chat_id': TELEGRAM_CHAT_ID,
         'text': text_message,
     }
-    print(send_message_url)
+
     response = requests.post(send_message_url, data=data)
 
     if response.status_code == 200:
@@ -141,14 +140,5 @@ def send_graph_as_photo(filename, graph_buffer):
             f"Failed to send graph for {filename}. Status code: {response.status_code}")
 
 
-def wrapper():
+if __name__ == '__main__':
     get_data()
-
-
-# Define the schedule
-schedule.every().day.at("10:59").do(wrapper)
-
-# Run the scheduling loop
-while True:
-    schedule.run_pending()
-    time.sleep(1)
