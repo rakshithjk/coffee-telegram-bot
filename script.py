@@ -6,6 +6,7 @@ import os
 import schedule
 import matplotlib.pyplot as plt
 import io
+import time
 
 TELEGRAM_BOT_TOKEN = '6744365741:AAGU6MzaFI87wr1-o3M96iNVWs3XzXDGcpA'
 TELEGRAM_CHAT_ID = '-1002056928323'
@@ -145,9 +146,9 @@ def wrapper():
 
 
 # Define the schedule
-schedule.every().day.at("10:30").do(wrapper)
-get_data()
+schedule.every().day.at("10:59").do(wrapper)
+
 # Run the scheduling loop
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
