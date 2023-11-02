@@ -59,7 +59,7 @@ def get_data():
                 writer.writerow([formatted_date, category, price])
 
             # Send a telegram message with the price update
-            final_message =final_message + f"{category} - {average_price} \n"
+            final_message =final_message + f"{category} - {price} \n"
             plot_and_send_graph_wrapper(filename, category)
 
         send_telegram_message(final_message)
