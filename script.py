@@ -3,10 +3,8 @@ import requests
 from datetime import date
 import csv
 import os
-import schedule
 import matplotlib.pyplot as plt
 import io
-import time
 
 TELEGRAM_BOT_TOKEN = '6744365741:AAGU6MzaFI87wr1-o3M96iNVWs3XzXDGcpA'
 TELEGRAM_CHAT_ID = '-1002056928323'
