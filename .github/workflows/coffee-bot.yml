@@ -22,6 +22,35 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Check if CSV artifacts exist
+        id: check-artifacts
+        run: |
+          if [ -n "$(ls -A /github/workspace/path/to/artifacts)" ]; then
+            echo "CSV artifacts exist."
+            echo "::set-output name=artifacts_exist::true"
+          else
+            echo "No CSV artifacts found."
+            echo "::set-output name=artifacts_exist::false"
+          fi
+
+      - name: Restore CSV files
+        if: steps.check-artifacts.outputs.artifacts_exist == 'true'
+        uses: actions/download-artifact@v2
+        with:
+          name: csv-artifacts
+
       - name: Run the script
         run: |
           python script.py
+
+      - name: Save CSV files
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: csv-artifacts
+          path: |
+            arabica_cherry_prices.csv
+            arabica_parchment_prices.csv
+            black_pepper_prices.csv
+            robusta_cherry_prices.csv
+            robusta_parchment_prices.csv
