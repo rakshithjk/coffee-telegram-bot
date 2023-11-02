@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from datetime import date
+from datetime import date, timedelta
 import csv
 import os
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ csv_filenames = [
 
 def get_data():
     # Send an HTTP GET request to the URL of the webpage
-    today = date.today()
+    today = date.today() - timedelta(days = 1)
     formatted_date = today.strftime("%d-%m-%Y")
     url = f"http://kirehalli.com/coffee-prices-karnataka-{formatted_date}/"
     response = requests.get(url)
