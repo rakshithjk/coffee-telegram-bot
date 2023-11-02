@@ -1,8 +1,8 @@
-name: Daily Script
+name: coffee-bot
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '*/5 * * * *'
 
 jobs:
   run:
@@ -17,7 +17,10 @@ jobs:
         with:
           python-version: 3.11.4
 
-      - name: Run the script
+      - name: Install Python dependencies
         run: |
           pip install -r requirements.txt
+
+      - name: Run the script
+        run: |
           python script.py
