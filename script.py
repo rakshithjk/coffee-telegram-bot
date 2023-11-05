@@ -53,6 +53,13 @@ def get_data():
         for category, price in category_data.items():
             filename = f"{category.lower().replace(' ','_')}prices.csv"
             append_mode = os.path.exists(filename)
+
+            with open(filename, "r", newline='') as file:
+                reader = csv.reader(file)
+                print("Current contents of file")
+                for row in reader:
+                    print(row)
+            
             with open(filename, "a" if append_mode else "w", newline='') as file:
                 writer = csv.writer(file)
                 # Write the data

@@ -9,6 +9,11 @@ jobs:
   run:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      actions: read
+      packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,14 +27,22 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Restore CSV files
-        uses: actions/download-artifact@v3
+      - name: Download artifact
+        uses: actions/github-script@v6
+        continue-on-error: true
+        env:
+          WORKFLOW_FILENAME: coffee-bot.yml
+          ARTIFACT_NAME: csv-artifacts
+          ARTIFACT_FILENAME: csv-artifacts.zip
         with:
-          name: csv-artifacts
+          script: |
+            const script = require('./download-previous-artifact.js')
+            await script({github, context, core})
 
       - name: Run the script
         if: always()
         run: |
+          python list_pwd.py
           python script.py
 
       - name: Save CSV files
