@@ -42,7 +42,6 @@ jobs:
       - name: Run the script
         if: always()
         run: |
-          python list_pwd.py
           python script.py
 
       - name: Save CSV files

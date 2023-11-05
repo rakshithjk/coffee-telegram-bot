@@ -18,9 +18,9 @@ csv_filenames = [
 ]
 
 
-def get_data():
+def get_data(date_delta):
     # Send an HTTP GET request to the URL of the webpage
-    today = date.today() - timedelta(days = 1)
+    today = date.today() - timedelta(days = date_delta)
     formatted_date = today.strftime("%d-%m-%Y")
     url = f"http://kirehalli.com/coffee-prices-karnataka-{formatted_date}/"
     response = requests.get(url)
@@ -72,7 +72,7 @@ def get_data():
         send_telegram_message(final_message)
         print("Data written to files for each category and date.")
     else:
-        print(f"Failed to fetch data from {url}")
+        get_data(1)
 
 
 def send_telegram_message(text_message):
@@ -146,4 +146,4 @@ def send_graph_as_photo(filename, graph_buffer):
 
 
 if __name__ == '__main__':
-    get_data()
+    get_data(0)
